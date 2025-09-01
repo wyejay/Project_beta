@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}AI Dictionary - Smart Word Definitions{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-search me-3"></i>
+                AI Dictionary
+            </h1>
+            <p class="lead text-muted">
+                Discover comprehensive word definitions, classifications, examples, and contextual usage powered by artificial intelligence.
+            </p>
+        </div>
+
+        <!-- Search Form -->
+        <div class="card shadow-lg mb-5">
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('search_word') }}" id="searchForm">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text">
+                            <i class="fas fa-spell-check"></i>
+                        </span>
+                        <input type="text" 
+                               class="form-control" 
+                               name="word" 
+                               id="wordInput"
+                               placeholder="Enter any word to explore..."
+                               value="{{ word if word else '' }}"
+                               required
+                               maxlength="50"
+                               autocomplete="off">
+                        <button class="btn btn-primary" type="submit" id="searchBtn">
+                            <i class="fas fa-search me-2"></i>
+                            Search
+                        </button>
+                    </div>
+                    <div class="form-text mt-2">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Search for any word to get AI-powered definitions, examples, and usage
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Loading State (hidden by default) -->
+        <div class="card shadow-lg mb-5 d-none" id="loadingCard">
+            <div class="card-body text-center p-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <h5 class="mb-2">Analyzing word...</h5>
+                <p class="text-muted">Our AI is gathering comprehensive information about your word.</p>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        {% if definition_data %}
+        <div class="card shadow-lg" id="resultsCard">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title mb-0">
+                    <i class="fas fa-book-open me-2"></i>
+                    "{{ word|title }}"
+                    {% if definition_data.pronunciation %}
+                        <small class="text-light opacity-75 ms-2">{{ definition_data.pronunciation }}</small>
+                    {% endif %}
+                </h2>
+            </div>
+            <div class="card-body p-4">
+                <!-- Part of Speech -->
+                <div class="mb-4">
+                    <span class="badge bg-secondary fs-6 mb-3">
+                        <i class="fas fa-tag me-1"></i>
+                        {{ definition_data.part_of_speech|title }}
+                    </span>
+                </div>
+
+                <!-- Definition -->
+                <div class="mb-4">
+                    <h4 class="text-primary mb-3">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Definition
+                    </h4>
+                    <p class="fs-5 lh-base">{{ definition_data.definition }}</p>
+                </div>
+
+                <!-- Examples -->
+                {% if definition_data.examples %}
+                <div class="mb-4">
+                    <h4 class="text-primary mb-3">
+                        <i class="fas fa-list me-2"></i>
+                        Usage Examples
+                    </h4>
+                    <div class="row">
+                        {% for example in definition_data.examples %}
+                        <div class="col-md-6 mb-2">
+                            <div class="border-start border-info ps-3">
+                                <em>"{{ example }}"</em>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Contextual Sentences -->
+                {% if definition_data.contextual_sentences %}
+                <div class="mb-4">
+                    <h4 class="text-primary mb-3">
+                        <i class="fas fa-comment-dots me-2"></i>
+                        In Context
+                    </h4>
+                    {% for sentence in definition_data.contextual_sentences %}
+                    <div class="alert alert-info mb-3" role="alert">
+                        <i class="fas fa-quote-left me-2"></i>
+                        {{ sentence }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Etymology -->
+                {% if definition_data.etymology and definition_data.etymology != "Information not available" %}
+                <div class="mb-4">
+                    <h4 class="text-primary mb-3">
+                        <i class="fas fa-history me-2"></i>
+                        Etymology
+                    </h4>
+                    <p class="text-muted">{{ definition_data.etymology }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Search Again -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary" onclick="document.getElementById('wordInput').focus()">
+                        <i class="fas fa-search me-2"></i>
+                        Search Another Word
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Welcome State -->
+        <div class="card shadow-lg" id="welcomeCard">
+            <div class="card-body text-center p-5">
+                <div class="mb-4">
+                    <i class="fas fa-book-reader display-1 text-primary mb-3"></i>
+                </div>
+                <h3 class="mb-3">Welcome to AI Dictionary</h3>
+                <p class="text-muted mb-4">
+                    Enter any word above to get comprehensive information including:
+                </p>
+                <div class="row text-start">
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Detailed definitions
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Parts of speech
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Usage examples
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Contextual sentences
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
