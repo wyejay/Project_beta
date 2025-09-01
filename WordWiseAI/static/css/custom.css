@@ -1,0 +1,112 @@
+/* Custom styles for AI Dictionary */
+
+/* Smooth transitions for better UX */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Enhanced input styling */
+#wordInput:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Loading animation enhancements */
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Results card styling */
+#resultsCard {
+    animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer positioning */
+.footer {
+    margin-top: auto;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Enhanced typography for definitions */
+.fs-5 {
+    line-height: 1.6;
+}
+
+/* Contextual sentence styling */
+.alert-info {
+    border-left: 4px solid var(--bs-info);
+    background-color: rgba(var(--bs-info-rgb), 0.1);
+}
+
+/* Example styling */
+.border-start {
+    border-width: 3px !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .input-group-lg .form-control {
+        font-size: 1rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+}
+
+/* Accessibility improvements */
+.btn:focus,
+.form-control:focus {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+/* Enhanced button states */
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(var(--bs-primary-rgb), 0.3);
+}
+
+/* Loading state styling */
+#loadingCard .spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+/* Result badges */
+.badge {
+    letter-spacing: 0.5px;
+}
+
+/* Quote styling */
+.fa-quote-left {
+    opacity: 0.7;
+}
