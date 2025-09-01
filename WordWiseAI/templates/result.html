@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div id="resultsCard" class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-primary">
+                {{ word|capitalize }}
+                {% if part_of_speech %}
+                    <small class="text-muted">({{ part_of_speech }})</small>
+                {% endif %}
+            </h2>
+
+            <p class="fs-5">{{ definition }}</p>
+
+            {% if examples and examples|length > 0 %}
+            <div class="mt-4">
+                <h5>Examples:</h5>
+                <ul>
+                    {% for example in examples %}
+                        <li>{{ example }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if synonyms and synonyms|length > 0 %}
+            <div class="mt-4">
+                <h5>Synonyms:</h5>
+                <p>{{ synonyms | join(", ") }}</p>
+            </div>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                    Search Another Word
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
