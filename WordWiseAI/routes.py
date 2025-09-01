@@ -1,7 +1,7 @@
 import logging
 from flask import render_template, request, jsonify, flash, redirect, url_for
-from app import app
-from openai_service import get_word_definition
+from .app import app
+from .openai_service import get_word_definition
 
 @app.route('/')
 def index():
